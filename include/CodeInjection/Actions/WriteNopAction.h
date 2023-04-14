@@ -1,9 +1,8 @@
 #pragma once
 
-#include <Memory.h>
-
 #include <cstdint>
 #include <memory>
+#include <memory_util>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -30,7 +29,8 @@ namespace CodeInjection::Actions {
         }
 
         uintptr_t GetAddress(std::shared_ptr<InjectionVariables> vars) {
-            if (!_params.addressVariable.empty()) return vars->Get<uintptr_t>(_params.addressVariable);
+            if (!_params.addressVariable.empty())
+                return vars->Get<uintptr_t>(_params.addressVariable);
             else if (_params.address != 0) return _params.address;
             else if (ActionCurrentAddress != 0) return ActionCurrentAddress;
             else throw std::runtime_error("WriteNopAction: No address specified");
@@ -42,18 +42,22 @@ namespace CodeInjection::Actions {
             return bytes;
         }
 
-        size_t GetByteCount(std::shared_ptr<InjectionVariables> vars) override { return GetBytes(vars).size(); }
+        size_t GetByteCount(std::shared_ptr<InjectionVariables> vars) override {
+            return GetBytes(vars).size();
+        }
 
         void Perform(std::shared_ptr<InjectionVariables> vars) override {
             auto address          = GetAddress(vars);
             auto bytes            = GetBytes(vars);
             auto isWriteProtected = IsWriteProtected(vars);
 
-            Log("WriteNopAction: Writing {} NOP bytes to 0x{:x} (Protected: {})", bytes.size(), address,
-                isWriteProtected);
+            _Log_(
+                "WriteNopAction: Writing {} NOP bytes to 0x{:x} (Protected: {})", bytes.size(),
+                address, isWriteProtected
+            );
 
-            if (isWriteProtected) Memory::WriteProtected(address, bytes);
-            else Memory::Write(address, bytes);
+            if (isWriteProtected) MemoryUtil::WriteProtected(address, bytes);
+            else MemoryUtil::Write(address, bytes);
         }
     };
 }

@@ -1,9 +1,8 @@
 #pragma once
 
-#include <Memory.h>
-
 #include <cstdint>
 #include <memory>
+#include <memory_util>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -31,29 +30,33 @@ namespace CodeInjection::Actions {
         }
 
         uintptr_t GetToAddress(std::shared_ptr<InjectionVariables> vars) {
-            if (!_params.toAddressVariable.empty()) return vars->Get<uintptr_t>(_params.toAddressVariable);
+            if (!_params.toAddressVariable.empty())
+                return vars->Get<uintptr_t>(_params.toAddressVariable);
             else if (_params.toAddress != 0) return _params.toAddress;
             else throw std::runtime_error("WriteJmpAction: No address specified");
         }
 
         uintptr_t GetFromAddress(std::shared_ptr<InjectionVariables> vars) {
-            if (!_params.fromAddressVariable.empty()) return vars->Get<uintptr_t>(_params.fromAddressVariable);
+            if (!_params.fromAddressVariable.empty())
+                return vars->Get<uintptr_t>(_params.fromAddressVariable);
             else if (_params.fromAddress != 0) return _params.fromAddress;
             else if (ActionCurrentAddress != 0) return ActionCurrentAddress;
             else throw std::runtime_error("WriteJmpAction: No address specified");
         }
 
         std::vector<uint8_t> GetBytes(std::shared_ptr<InjectionVariables> vars) {
-            auto          toAddress   = GetToAddress(vars);
-            auto          fromAddress = GetFromAddress(vars);
-            Memory::Bytes bytes;
+            auto              toAddress   = GetToAddress(vars);
+            auto              fromAddress = GetFromAddress(vars);
+            MemoryUtil::Bytes bytes;
             bytes.AddByte(0xE9);                                 // JMP
             auto relativeAddress = toAddress - fromAddress - 5;  // 5 bytes for the JMP
             bytes.AddAddress(relativeAddress);
             return bytes.GetBytes();
         }
 
-        size_t GetByteCount(std::shared_ptr<InjectionVariables> vars) override { return GetBytes(vars).size(); }
+        size_t GetByteCount(std::shared_ptr<InjectionVariables> vars) override {
+            return GetBytes(vars).size();
+        }
 
         void Perform(std::shared_ptr<InjectionVariables> vars) override {
             auto fromAddress      = GetFromAddress(vars);
@@ -61,11 +64,13 @@ namespace CodeInjection::Actions {
             auto isWriteProtected = IsWriteProtected(vars);
             auto bytes            = GetBytes(vars);
 
-            Log("WriteJmpAction: Writing JMP at 0x{:X} to 0x{:x} (Protected: {})", fromAddress, toAddress,
-                isWriteProtected);
+            _Log_(
+                "WriteJmpAction: Writing JMP at 0x{:X} to 0x{:x} (Protected: {})", fromAddress,
+                toAddress, isWriteProtected
+            );
 
-            if (isWriteProtected) Memory::WriteProtected(fromAddress, bytes);
-            else Memory::Write(fromAddress, bytes);
+            if (isWriteProtected) MemoryUtil::WriteProtected(fromAddress, bytes);
+            else MemoryUtil::Write(fromAddress, bytes);
         }
     };
 }

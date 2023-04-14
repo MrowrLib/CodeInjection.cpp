@@ -1,7 +1,6 @@
 #pragma once
 
-#include <Logging.h>
-
+#include <_Log_>
 #include <functional>
 #include <memory>
 #include <string>
@@ -31,25 +30,32 @@ namespace CodeInjection {
         }
 
     public:
-        InjectionApp(const std::string& name) : _name(name), _variables(std::make_shared<InjectionVariables>()) {}
+        InjectionApp(const std::string& name)
+            : _name(name), _variables(std::make_shared<InjectionVariables>()) {}
 
         const std::string& GetName() const { return _name; }
 
-        InjectionApp& On(const std::string& stateName, std::function<void(InjectionBuilder&)> block) {
-            Log("[{}] On: {}", _name, stateName);
+        InjectionApp& On(
+            const std::string& stateName, std::function<void(InjectionBuilder&)> block
+        ) {
+            _Log_("[{}] On: {}", _name, stateName);
             auto state   = FindOrCreateState(stateName);
             auto builder = std::make_shared<InjectionBuilder>(_variables);
             builder->SetActionsContainer(state->GetActions());
             block(*builder);
             return *this;
         }
-        InjectionApp& OnInstall(std::function<void(InjectionBuilder&)> block) { return On("Install", block); }
-        InjectionApp& OnUninstall(std::function<void(InjectionBuilder&)> block) { return On("Uninstall", block); }
-        void          Goto(const std::string& stateName) {
-            Log("[{}] Goto: {}", _name, stateName);
+        InjectionApp& OnInstall(std::function<void(InjectionBuilder&)> block) {
+            return On("Install", block);
+        }
+        InjectionApp& OnUninstall(std::function<void(InjectionBuilder&)> block) {
+            return On("Uninstall", block);
+        }
+        void Goto(const std::string& stateName) {
+            _Log_("[{}] Goto: {}", _name, stateName);
             auto state = GetStateIfExists(stateName);
             if (!state) {
-                Log("[{}] Goto: {} - State not found", _name, stateName);
+                _Log_("[{}] Goto: {} - State not found", _name, stateName);
                 return;
             }
             auto actions = state->GetActions();
@@ -63,7 +69,7 @@ namespace CodeInjection {
             }
         }
         InjectionApp& Configure(std::function<void(InjectionBuilder&)> block) {
-            Log("[{}] Configure", _name);
+            _Log_("[{}] Configure", _name);
             On("Configure", block);
             Goto("Configure");  // <--- Configure() actions are run immediately
             return *this;
@@ -84,14 +90,14 @@ namespace CodeInjection {
 
         template <typename T>
         InjectionApp& Var(const std::string& name, T value) {
-            Log("Set Variable: {} ({})", name, typeid(T).name());
+            _Log_("Set Variable: {} ({})", name, typeid(T).name());
             _variables->Set(name, value);
             return *this;
         }
 
         template <typename T>
         T& Var(const std::string& name) {
-            Log("Get Variable: {} ({})", name, typeid(T).name());
+            _Log_("Get Variable: {} ({})", name, typeid(T).name());
             return _variables->Get<T>(name);
         }
     };

@@ -1,7 +1,6 @@
 #pragma once
 
-#include <Logging.h>
-
+#include <_Log_>
 #include <functional>
 #include <memory>
 #include <string>
@@ -21,7 +20,9 @@ namespace CodeInjection {
     public:
         InjectionBuilder(std::shared_ptr<InjectionVariables> variables) : _variables(variables) {}
 
-        void SetActionsContainer(std::shared_ptr<std::vector<std::shared_ptr<InjectionAction>>> actions) {
+        void SetActionsContainer(
+            std::shared_ptr<std::vector<std::shared_ptr<InjectionAction>>> actions
+        ) {
             _actions = actions;
         }
 
@@ -57,8 +58,12 @@ namespace CodeInjection {
             return *this;
         }
 
-        InjectionBuilder& WriteBytes(const std::string& addressVariable, const std::string& bytesVariable) {
-            AddAction(Actions::WriteBytesAction({.addressVariable = addressVariable, .bytesVariable = bytesVariable}));
+        InjectionBuilder& WriteBytes(
+            const std::string& addressVariable, const std::string& bytesVariable
+        ) {
+            AddAction(Actions::WriteBytesAction(
+                {.addressVariable = addressVariable, .bytesVariable = bytesVariable}
+            ));
             return *this;
         }
 
@@ -72,7 +77,9 @@ namespace CodeInjection {
             return *this;
         }
 
-        InjectionBuilder& WriteJmp(const std::string& fromAddressVariable, const std::string& toAddressVariable) {
+        InjectionBuilder& WriteJmp(
+            const std::string& fromAddressVariable, const std::string& toAddressVariable
+        ) {
             AddAction(Actions::WriteJmpAction(
                 {.fromAddressVariable = fromAddressVariable, .toAddressVariable = toAddressVariable}
             ));
@@ -90,7 +97,8 @@ namespace CodeInjection {
         }
 
         InjectionBuilder& WriteNop(const std::string& addressVariable, size_t count) {
-            AddAction(Actions::WriteNopAction({.addressVariable = addressVariable, .count = count}));
+            AddAction(Actions::WriteNopAction({.addressVariable = addressVariable, .count = count})
+            );
             return *this;
         }
 
@@ -112,7 +120,9 @@ namespace CodeInjection {
         InjectionBuilder& AllocateMemory(
             const std::string& addressVariable, std::function<void(InjectionBuilder&)> code
         ) {
-            AddAction(Actions::AllocateMemoryAction({.addressVariable = addressVariable, .code = code}));
+            AddAction(
+                Actions::AllocateMemoryAction({.addressVariable = addressVariable, .code = code})
+            );
             return *this;
         }
 
@@ -147,7 +157,9 @@ namespace CodeInjection {
         }
 
         InjectionBuilder& SaveGeneralPurposeRegisters() {
-            AddAction(Actions::SaveRegistersAction({.registers = Registers::GetGeneralPurposeRegisters()}));
+            AddAction(
+                Actions::SaveRegistersAction({.registers = Registers::GetGeneralPurposeRegisters()})
+            );
             return *this;
         }
 
@@ -162,7 +174,9 @@ namespace CodeInjection {
         }
 
         InjectionBuilder& RestoreGeneralPurposeRegisters() {
-            AddAction(Actions::RestoreRegistersAction({.registers = Registers::GetGeneralPurposeRegisters()}));
+            AddAction(Actions::RestoreRegistersAction(
+                {.registers = Registers::GetGeneralPurposeRegisters()}
+            ));
             return *this;
         }
 
@@ -172,8 +186,8 @@ namespace CodeInjection {
         }
 
         InjectionBuilder& FindBytes(
-            const std::string& module, const std::string& bytesString, const std::string& outVariable,
-            size_t startOffset = 0x0
+            const std::string& module, const std::string& bytesString,
+            const std::string& outVariable, size_t startOffset = 0x0
         ) {
             AddAction(Actions::FindBytesAction({
                 .module      = module,
@@ -186,14 +200,14 @@ namespace CodeInjection {
 
         template <typename T>
         InjectionBuilder& Var(const std::string& name, T value) {
-            Log("Set Variable: {} ({})", name, typeid(T).name());
+            _Log_("Set Variable: {} ({})", name, typeid(T).name());
             _variables->Set(name, value);
             return *this;
         }
 
         template <typename T>
         T& Var(const std::string& name) {
-            Log("Get Variable: {} ({})", name, typeid(T).name());
+            _Log_("Get Variable: {} ({})", name, typeid(T).name());
             return _variables->Get<T>(name);
         }
     };

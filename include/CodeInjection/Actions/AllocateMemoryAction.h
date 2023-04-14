@@ -1,10 +1,9 @@
 #pragma once
 
-#include <Logging.h>
-#include <Memory.h>
-
+#include <_Log_>
 #include <functional>
 #include <memory>
+#include <memory_util>
 #include <string>
 
 #include "../InjectionAction.h"
@@ -53,10 +52,10 @@ namespace CodeInjection {
 
             void Perform(std::shared_ptr<InjectionVariables> vars) override {
                 RunBlockToPopulateActions(_params.code, vars);
-                Log("Alloc requires {} bytes", _totalRequiredBytes);
+                _Log_("Alloc requires {} bytes", _totalRequiredBytes);
 
-                auto address = Memory::Allocate(_totalRequiredBytes);
-                Log("Allocated memory at address 0x{:X}", address);
+                auto address = MemoryUtil::Allocate(_totalRequiredBytes);
+                _Log_("Allocated memory at address 0x{:X}", address);
 
                 vars->Set<uintptr_t>(_params.addressVariable, address);
 

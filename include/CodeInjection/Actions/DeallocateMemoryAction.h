@@ -23,7 +23,8 @@ namespace CodeInjection {
 
         public:
             uintptr_t GetAddress(std::shared_ptr<InjectionVariables> vars) {
-                if (!_params.addressVariable.empty()) return vars->Get<uintptr_t>(_params.addressVariable);
+                if (!_params.addressVariable.empty())
+                    return vars->Get<uintptr_t>(_params.addressVariable);
                 else if (_params.address != 0) return _params.address;
                 else if (ActionCurrentAddress != 0) return ActionCurrentAddress;
                 else throw std::runtime_error("DeallocateMemoryAction: No address specified");
@@ -36,11 +37,11 @@ namespace CodeInjection {
             void Perform(std::shared_ptr<InjectionVariables> vars) override {
                 auto address = GetAddress(vars);
                 if (address == 0) {
-                    Log("DeallocateMemoryAction: Address is 0, not deallocating");
+                    _Log_("DeallocateMemoryAction: Address is 0, not deallocating");
                     return;
                 }
-                Log("DeallocateMemoryAction: Deallocating memory at 0x{:X}", address);
-                Memory::Free(address);
+                _Log_("DeallocateMemoryAction: Deallocating memory at 0x{:X}", address);
+                MemoryUtil::Free(address);
             }
         };
     }

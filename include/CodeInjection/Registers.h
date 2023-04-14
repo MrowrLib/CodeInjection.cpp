@@ -6,6 +6,19 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#define __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(REG_NAME, REG_TYPE) \
+    REG_TYPE REG_NAME() { return CurrentValues::REG_NAME; }                    \
+    template <typename T>                                                      \
+    T REG_NAME(uintptr_t offset) {                                             \
+        return read_memory<T>(static_cast<uintptr_t>(REG_NAME()), {offset});   \
+    }                                                                          \
+    template <typename T>                                                      \
+    T REG_NAME(std::vector<uintptr_t> offsets) {                               \
+        return read_memory<T>(static_cast<uintptr_t>(REG_NAME()), offsets);    \
+    }                                                                          \
+    REG_TYPE REG_NAME(uintptr_t offset) { return REG_NAME<REG_TYPE>(offset); } \
+    REG_TYPE REG_NAME(std::vector<uintptr_t> offsets) { return REG_NAME<REG_TYPE>(offsets); }
+
 namespace CodeInjection {
 
     enum class Register {
@@ -57,38 +70,38 @@ namespace CodeInjection {
         // R13B,
         // R14B,
         // R15B,
-        XMM0,
-        XMM1,
-        XMM2,
-        XMM3,
-        XMM4,
-        XMM5,
-        XMM6,
-        XMM7,
-        XMM8,
-        XMM9,
-        XMM10,
-        XMM11,
-        XMM12,
-        XMM13,
-        XMM14,
-        XMM15,
-        XMM16,
-        XMM17,
-        XMM18,
-        XMM19,
-        XMM20,
-        XMM21,
-        XMM22,
-        XMM23,
-        XMM24,
-        XMM25,
-        XMM26,
-        XMM27,
-        XMM28,
-        XMM29,
-        XMM30,
-        XMM31,
+        // XMM0,
+        // XMM1,
+        // XMM2,
+        // XMM3,
+        // XMM4,
+        // XMM5,
+        // XMM6,
+        // XMM7,
+        // XMM8,
+        // XMM9,
+        // XMM10,
+        // XMM11,
+        // XMM12,
+        // XMM13,
+        // XMM14,
+        // XMM15,
+        // XMM16,
+        // XMM17,
+        // XMM18,
+        // XMM19,
+        // XMM20,
+        // XMM21,
+        // XMM22,
+        // XMM23,
+        // XMM24,
+        // XMM25,
+        // XMM26,
+        // XMM27,
+        // XMM28,
+        // XMM29,
+        // XMM30,
+        // XMM31,
         // YMM0,
         // YMM1,
         // YMM2,
@@ -167,38 +180,38 @@ namespace CodeInjection {
             // uint8_t   R13B  = 0;
             // uint8_t   R14B  = 0;
             // uint8_t   R15B  = 0;
-            uint128_t XMM0  = 0;
-            uint128_t XMM1  = 0;
-            uint128_t XMM2  = 0;
-            uint128_t XMM3  = 0;
-            uint128_t XMM4  = 0;
-            uint128_t XMM5  = 0;
-            uint128_t XMM6  = 0;
-            uint128_t XMM7  = 0;
-            uint128_t XMM8  = 0;
-            uint128_t XMM9  = 0;
-            uint128_t XMM10 = 0;
-            uint128_t XMM11 = 0;
-            uint128_t XMM12 = 0;
-            uint128_t XMM13 = 0;
-            uint128_t XMM14 = 0;
-            uint128_t XMM15 = 0;
-            uint128_t XMM16 = 0;
-            uint128_t XMM17 = 0;
-            uint128_t XMM18 = 0;
-            uint128_t XMM19 = 0;
-            uint128_t XMM20 = 0;
-            uint128_t XMM21 = 0;
-            uint128_t XMM22 = 0;
-            uint128_t XMM23 = 0;
-            uint128_t XMM24 = 0;
-            uint128_t XMM25 = 0;
-            uint128_t XMM26 = 0;
-            uint128_t XMM27 = 0;
-            uint128_t XMM28 = 0;
-            uint128_t XMM29 = 0;
-            uint128_t XMM30 = 0;
-            uint128_t XMM31 = 0;
+            // uint128_t XMM0  = 0;
+            // uint128_t XMM1  = 0;
+            // uint128_t XMM2  = 0;
+            // uint128_t XMM3  = 0;
+            // uint128_t XMM4  = 0;
+            // uint128_t XMM5  = 0;
+            // uint128_t XMM6  = 0;
+            // uint128_t XMM7  = 0;
+            // uint128_t XMM8  = 0;
+            // uint128_t XMM9  = 0;
+            // uint128_t XMM10 = 0;
+            // uint128_t XMM11 = 0;
+            // uint128_t XMM12 = 0;
+            // uint128_t XMM13 = 0;
+            // uint128_t XMM14 = 0;
+            // uint128_t XMM15 = 0;
+            // uint128_t XMM16 = 0;
+            // uint128_t XMM17 = 0;
+            // uint128_t XMM18 = 0;
+            // uint128_t XMM19 = 0;
+            // uint128_t XMM20 = 0;
+            // uint128_t XMM21 = 0;
+            // uint128_t XMM22 = 0;
+            // uint128_t XMM23 = 0;
+            // uint128_t XMM24 = 0;
+            // uint128_t XMM25 = 0;
+            // uint128_t XMM26 = 0;
+            // uint128_t XMM27 = 0;
+            // uint128_t XMM28 = 0;
+            // uint128_t XMM29 = 0;
+            // uint128_t XMM30 = 0;
+            // uint128_t XMM31 = 0;
             // uint256_t YMM0  = 0;
             // uint256_t YMM1  = 0;
             // uint256_t YMM2  = 0;
@@ -226,265 +239,167 @@ namespace CodeInjection {
             // uint256_t YMM24 = 0;
         }
 
-        std::unordered_set<Register> x86_GeneralPurposeRegisters = {Register::EAX, Register::EBX, Register::ECX,
-                                                                    Register::EDX, Register::ESI, Register::EDI,
-                                                                    Register::ESP, Register::EBP};
+        std::unordered_set<Register> x86_GeneralPurposeRegisters = {
+            Register::EAX, Register::EBX, Register::ECX, Register::EDX,
+            Register::ESI, Register::EDI, Register::ESP, Register::EBP};
 
         std::unordered_set<Register> x64_GeneralPurposeRegisters = {
-            Register::RAX, Register::RBX, Register::RCX, Register::RDX, Register::RSI, Register::RDI,
-            Register::RSP, Register::RBP, Register::R8,  Register::R9,  Register::R10, Register::R11,
+            Register::RAX, Register::RBX, Register::RCX, Register::RDX,
+            Register::RSI, Register::RDI, Register::RSP, Register::RBP,
+            Register::R8,  Register::R9,  Register::R10, Register::R11,
             Register::R12, Register::R13, Register::R14, Register::R15};
 
         std::unordered_set<Register> GetGeneralPurposeRegisters() {
             auto registers = x86_GeneralPurposeRegisters;
             if (sizeof(intptr_t) == 8)
-                registers.insert(x64_GeneralPurposeRegisters.begin(), x64_GeneralPurposeRegisters.end());
+                registers.insert(
+                    x64_GeneralPurposeRegisters.begin(), x64_GeneralPurposeRegisters.end()
+                );
             return registers;
         }
 
         class RegistersReader {
+            template <typename T>
+            T read_memory(uintptr_t base_address, std::vector<uintptr_t> offsets) {
+                auto address = base_address;
+                for (auto offset : offsets) {
+                    address = *reinterpret_cast<uintptr_t*>(address + offset);
+                }
+                return (T)(address);
+            }
+
         public:
-            uint32_t eax() { return CurrentValues::EAX; }
-            template <typename T>
-            T eax(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::EAX + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T eax(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::EAX;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint32_t eax(uint32_t offset) { return eax<uint32_t>(offset); }
-            uint32_t eax(std::vector<uint32_t> offsets) { return eax<uint32_t>(offsets); }
+            // 32-bit general purpose registers
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(EAX, uint32_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(EBX, uint32_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ECX, uint32_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(EDX, uint32_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ESI, uint32_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(EDI, uint32_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(EBP, uint32_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ESP, uint32_t)
 
-            uint32_t ebx() { return CurrentValues::EBX; }
-            template <typename T>
-            T ebx(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::EBX + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T ebx(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::EBX;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint32_t ebx(uint32_t offset) { return ebx<uint32_t>(offset); }
-            uint32_t ebx(std::vector<uint32_t> offsets) { return ebx<uint32_t>(offsets); }
+            // 64-bit general purpose registers
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(RAX, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(RBX, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(RCX, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(RDX, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(RSI, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(RDI, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(RBP, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(RSP, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R8, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R9, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R10, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R11, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R12, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R13, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R14, uint64_t)
+            __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R15, uint64_t)
 
-            uint32_t ecx() { return CurrentValues::ECX; }
-            template <typename T>
-            T ecx(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::ECX + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T ecx(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::ECX;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint32_t ecx(uint32_t offset) { return ecx<uint32_t>(offset); }
-            uint32_t ecx(std::vector<uint32_t> offsets) { return ecx<uint32_t>(offsets); }
+            // // 8-bit registers (R8B-R15B)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R8B, uint8_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R9B, uint8_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R10B, uint8_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R11B, uint8_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R12B, uint8_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R13B, uint8_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R14B, uint8_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R15B, uint8_t)
 
-            uint32_t edx() { return CurrentValues::EDX; }
-            template <typename T>
-            T edx(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::EDX + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T edx(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::EDX;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint32_t edx(uint32_t offset) { return edx<uint32_t>(offset); }
-            uint32_t edx(std::vector<uint32_t> offsets) { return edx<uint32_t>(offsets); }
+            // // 16-bit registers (R8W-R15W)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R8W, uint16_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R9W, uint16_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R10W, uint16_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R11W, uint16_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R12W, uint16_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R13W, uint16_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R14W, uint16_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R15W, uint16_t)
 
-            uint32_t esi() { return CurrentValues::ESI; }
-            template <typename T>
-            T esi(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::ESI + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T esi(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::ESI;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint32_t esi(uint32_t offset) { return esi<uint32_t>(offset); }
-            uint32_t esi(std::vector<uint32_t> offsets) { return esi<uint32_t>(offsets); }
+            // // 32-bit registers (R8D-R15D)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R8D, uint32_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R9D, uint32_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R10D, uint32_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R11D, uint32_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R12D, uint32_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R13D, uint32_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R14D, uint32_t)
+            // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(R15D, uint32_t)
 
-            uint32_t edi() { return CurrentValues::EDI; }
-            template <typename T>
-            T edi(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::EDI + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T edi(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::EDI;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint32_t edi(uint32_t offset) { return edi<uint32_t>(offset); }
-            uint32_t edi(std::vector<uint32_t> offsets) { return edi<uint32_t>(offsets); }
+            // // // 64-bit MMX registers
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(MM0, __m64)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(MM1, __m64)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(MM2, __m64)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(MM3, __m64)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(MM4, __m64)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(MM5, __m64)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(MM6, __m64)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(MM7, __m64)
 
-            uint32_t ebp() { return CurrentValues::EBP; }
-            template <typename T>
-            T ebp(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::EBP + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T ebp(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::EBP;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint32_t ebp(uint32_t offset) { return ebp<uint32_t>(offset); }
-            uint32_t ebp(std::vector<uint32_t> offsets) { return ebp<uint32_t>(offsets); }
+            // // // 128-bit SSE registers
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM0,  __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM1,  __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM2,  __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM3,  __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM4,  __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM5,  __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM6,  __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM7,  __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM8,  __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM9,  __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM10, __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM11, __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM12, __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM13, __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM14, __m128)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(XMM15, __m128)
 
-            uint32_t esp() { return CurrentValues::ESP; }
-            template <typename T>
-            T esp(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::ESP + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T esp(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::ESP;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint32_t esp(uint32_t offset) { return esp<uint32_t>(offset); }
-            uint32_t esp(std::vector<uint32_t> offsets) { return esp<uint32_t>(offsets); }
+            // // // 256-bit AVX registers
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM0,  __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM1,  __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM2,  __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM3,  __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM4,  __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM5,  __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM6,  __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM7,  __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM8,  __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM9,  __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM10, __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM11, __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM12, __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM13, __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM14, __m256)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(YMM15, __m256)
 
-            uint64_t rax() { return CurrentValues::RAX; }
-            template <typename T>
-            T rax(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::RAX + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T rax(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::RAX;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint64_t rax(uint32_t offset) { return rax<uint64_t>(offset); }
-            uint64_t rax(std::vector<uint32_t> offsets) { return rax<uint64_t>(offsets); }
+            // // // 512-bit AVX-512 registers
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM0,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM1,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM2,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM3,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM4,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM5,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM6,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM7,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM8,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM9,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM10, __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM11, __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM12, __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM13, __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM14, __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(ZMM15, __m512)
 
-            uint64_t rbx() { return CurrentValues::RBX; }
-            template <typename T>
-            T rbx(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::RBX + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T rbx(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::RBX;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint64_t rbx(uint32_t offset) { return rbx<uint64_t>(offset); }
-            uint64_t rbx(std::vector<uint32_t> offsets) { return rbx<uint64_t>(offsets); }
-
-            uint64_t rcx() { return CurrentValues::RCX; }
-            template <typename T>
-            T rcx(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::RCX + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T rcx(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::RCX;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint64_t rcx(uint32_t offset) { return rcx<uint64_t>(offset); }
-            uint64_t rcx(std::vector<uint32_t> offsets) { return rcx<uint64_t>(offsets); }
-
-            uint64_t rdx() { return CurrentValues::RDX; }
-            template <typename T>
-            T rdx(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::RDX + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T rdx(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::RDX;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint64_t rdx(uint32_t offset) { return rdx<uint64_t>(offset); }
-            uint64_t rdx(std::vector<uint32_t> offsets) { return rdx<uint64_t>(offsets); }
-
-            uint64_t rsi() { return CurrentValues::RSI; }
-            template <typename T>
-            T rsi(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::RSI + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T rsi(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::RSI;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint64_t rsi(uint32_t offset) { return rsi<uint64_t>(offset); }
-            uint64_t rsi(std::vector<uint32_t> offsets) { return rsi<uint64_t>(offsets); }
-
-            uint64_t rdi() { return CurrentValues::RDI; }
-            template <typename T>
-            T rdi(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::RDI + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T rdi(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::RDI;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint64_t rdi(uint32_t offset) { return rdi<uint64_t>(offset); }
-            uint64_t rdi(std::vector<uint32_t> offsets) { return rdi<uint64_t>(offsets); }
-
-            uint64_t rbp() { return CurrentValues::RBP; }
-            template <typename T>
-            T rbp(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::RBP + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T rbp(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::RBP;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint64_t rbp(uint32_t offset) { return rbp<uint64_t>(offset); }
-            uint64_t rbp(std::vector<uint32_t> offsets) { return rbp<uint64_t>(offsets); }
-
-            uint64_t rsp() { return CurrentValues::RSP; }
-            template <typename T>
-            T rsp(uint32_t offset) {
-                auto address = *reinterpret_cast<uintptr_t*>(CurrentValues::RSP + offset);
-                return (T)(address);
-            }
-            template <typename T>
-            T rsp(std::vector<uint32_t> offsets) {
-                auto address = CurrentValues::RSP;
-                for (auto offset : offsets) address = *reinterpret_cast<uintptr_t*>(address + offset);
-                return (T)(address);
-            }
-            uint64_t rsp(uint32_t offset) { return rsp<uint64_t>(offset); }
-            uint64_t rsp(std::vector<uint32_t> offsets) { return rsp<uint64_t>(offsets); }
-
-            // TODO : Add more registers
+            // // // 512-bit AVX-512 registers
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(K0,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(K1,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(K2,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(K3,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(K4,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(K5,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(K6,  __m512)
+            // // __CODE_INJECTION__DEFINE_REGISTER_READER_FUNCTIONS(K7,  __m512)
         };
 
         namespace Instructions {

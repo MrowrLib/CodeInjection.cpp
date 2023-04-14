@@ -1,7 +1,6 @@
 #pragma once
 
-#include <Logging.h>
-
+#include <_Log_>
 #include <cstdint>
 #include <functional>
 #include <memory>
@@ -19,14 +18,14 @@ namespace CodeInjection {
     InjectionApp& Get(const std::string& name) {
         auto found = RegisteredInjections.find(name);
         if (found != RegisteredInjections.end()) return *found->second;
-        Log("[{}] Injection not found", name);
+        _Log_("[{}] Injection not found", name);
         throw std::runtime_error("Injection not found");
     }
 
     InjectionApp& New(const std::string& name) {
         auto injectionApp          = std::make_shared<InjectionApp>(name);
         RegisteredInjections[name] = injectionApp;
-        Log("[{}] Register", name);
+        _Log_("[{}] Register", name);
         return *injectionApp;
     }
 
@@ -36,7 +35,7 @@ namespace CodeInjection {
     ) {
         auto injectionApp          = std::make_shared<InjectionApp>(name);
         RegisteredInjections[name] = injectionApp;
-        Log("[{}] Register Injected Function", name);
+        _Log_("[{}] Register Injected Function", name);
 
         injectionApp
             ->Configure([address, detourSize](Injection& _) {

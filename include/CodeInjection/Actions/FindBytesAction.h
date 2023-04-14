@@ -1,10 +1,9 @@
 #pragma once
 
-#include <Logging.h>
-#include <Memory.h>
-
+#include <_Log_>
 #include <cstdint>
 #include <memory>
+#include <memory_util>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -36,17 +35,20 @@ namespace CodeInjection::Actions {
         size_t GetByteCount(std::shared_ptr<InjectionVariables> vars) override { return 0; }
 
         std::string GetModuleName(std::shared_ptr<InjectionVariables> vars) {
-            if (!_params.moduleVariable.empty()) return vars->Get<std::string>(_params.moduleVariable);
+            if (!_params.moduleVariable.empty())
+                return vars->Get<std::string>(_params.moduleVariable);
             return _params.module;
         }
 
         std::vector<uint8_t> GetBytes(std::shared_ptr<InjectionVariables> vars) {
-            if (!_params.bytesVariable.empty()) return vars->Get<std::vector<uint8_t>>(_params.bytesVariable);
+            if (!_params.bytesVariable.empty())
+                return vars->Get<std::vector<uint8_t>>(_params.bytesVariable);
             return _params.bytes;
         }
 
         std::string GetBytesString(std::shared_ptr<InjectionVariables> vars) {
-            if (!_params.bytesStringVariable.empty()) return vars->Get<std::string>(_params.bytesStringVariable);
+            if (!_params.bytesStringVariable.empty())
+                return vars->Get<std::string>(_params.bytesStringVariable);
             return _params.bytesString;
         }
 
@@ -57,7 +59,8 @@ namespace CodeInjection::Actions {
         }
 
         uintptr_t GetStartOffset(std::shared_ptr<InjectionVariables> vars) {
-            if (!_params.startOffsetVariable.empty()) return vars->Get<uintptr_t>(_params.startOffsetVariable);
+            if (!_params.startOffsetVariable.empty())
+                return vars->Get<uintptr_t>(_params.startOffsetVariable);
             return _params.startOffset;
         }
 
@@ -68,22 +71,28 @@ namespace CodeInjection::Actions {
             auto mask        = GetMask(vars);
             auto startOffset = GetStartOffset(vars);
 
-            Memory::Bytes bytes;
+            MemoryUtil::Bytes bytes;
             if (bytesVector.empty())
-                if (bytesString.empty()) throw std::runtime_error("FindBytesAction: No bytes or bytesString provided");
-                else bytes = Memory::Bytes::FromString(bytesString);
+                if (bytesString.empty())
+                    throw std::runtime_error("FindBytesAction: No bytes or bytesString provided");
+                else bytes = MemoryUtil::Bytes::FromString(bytesString);
             else bytes = bytesVector;
 
             // Remove me
-            Log("!!! Bytes: {}", bytes.ToHexString());
+            _Log_("!!! Bytes: {}", bytes.ToHexString());
 
-            Log("FindBytesAction: Searching for {} (mask: '{}') in module {}", bytes.ToHexString(), mask, moduleName);
-            auto address = Memory::Find(moduleName, bytes, mask, startOffset);
+            _Log_(
+                "FindBytesAction: Searching for {} (mask: '{}') in module {}", bytes.ToHexString(),
+                mask, moduleName
+            );
+            auto address = MemoryUtil::Find(moduleName, bytes, mask, startOffset);
             if (address == 0) {
-                Log("FindBytesAction: Failed to find bytes in module {}", moduleName);
+                _Log_("FindBytesAction: Failed to find bytes in module {}", moduleName);
                 vars->Set<uintptr_t>(_params.outVariable, 0);
             } else {
-                Log("FindBytesAction: Found bytes in module {} at address {:x}", moduleName, address);
+                _Log_(
+                    "FindBytesAction: Found bytes in module {} at address {:x}", moduleName, address
+                );
                 vars->Set<uintptr_t>(_params.outVariable, address);
             }
         }
